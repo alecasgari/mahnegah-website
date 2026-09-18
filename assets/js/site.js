@@ -1,6 +1,22 @@
 (function () {
   const WEBHOOK =
     "https://n8n.alecasgari.com/webhook-test/5f5f6cb1-212c-4d22-a131-139a500b4506";
+  const MAPS = "https://goo.gl/maps/LQWLw7nzCf7GFoii6";
+  const TELEGRAM = "https://t.me/mahnegahbot";
+  const ADDRESS =
+    "سعادت آباد، بلوار سرو غرب، خیابان ریاضی بخشایش، کوی هفدهم غربی، ساختمان پزشکان عرفان، واحد ۱۰۸";
+  const SERVICES = [
+    "هایفوتراپی",
+    "مزوتراپی",
+    "زاویه سازی فک",
+    "ژل و فیلر",
+    "بوتاکس",
+    "لیزر",
+    "فیشیال",
+    "لاغری",
+    "لابیا پلاستی",
+    "سایر خدمات",
+  ];
   const UTM_KEYS = [
     "utm_source",
     "utm_medium",
@@ -14,6 +30,146 @@
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
+  }
+
+  function basePath() {
+    return document.documentElement.getAttribute("data-base") || "";
+  }
+
+  function siteHref(path) {
+    const base = basePath();
+    if (!path || path === "/") return base || "./";
+    if (path.startsWith("#")) return (base || "./") + path;
+    return base + path.replace(/^\//, "");
+  }
+
+  function serviceOptions(selected) {
+    return SERVICES.map(function (s) {
+      const sel = s === selected ? " selected" : "";
+      return '<option value="' + s + '"' + sel + ">" + s + "</option>";
+    }).join("");
+  }
+
+  function formMarkup(selected) {
+    return (
+      '<form class="form" data-lead-form>' +
+      "<label>نام کامل" +
+      '<input name="name" type="text" required autocomplete="name" placeholder="نام و نام خانوادگی">' +
+      "</label>" +
+      "<label>موبایل" +
+      '<input name="phone" type="tel" required inputmode="numeric" autocomplete="tel" placeholder="0912xxxxxxx">' +
+      "</label>" +
+      "<label>خدمت مورد نظر" +
+      '<select name="service" required>' +
+      '<option value="" disabled' +
+      (selected ? "" : " selected") +
+      ">انتخاب کنید</option>" +
+      serviceOptions(selected) +
+      "</select>" +
+      "</label>" +
+      '<button class="btn btn-primary" type="submit">ارسال درخواست</button>' +
+      '<div class="form-status" data-form-status></div>' +
+      "</form>"
+    );
+  }
+
+  function injectChrome() {
+    if (qs("[data-chrome-ready]")) return;
+    const current = document.body.getAttribute("data-current") || "";
+    const headerHost = qs("[data-site-header]");
+    const footerHost = qs("[data-site-footer]");
+    if (headerHost) {
+      headerHost.outerHTML =
+        '<header class="site-header" data-chrome-ready>' +
+        '<div class="wrap header-inner">' +
+        '<a class="brand" href="' +
+        siteHref("/") +
+        '">' +
+        '<img src="' +
+        siteHref("assets/img/logo.png") +
+        '" alt="لوگوی مه نگاه" width="42" height="42">' +
+        "<span>مه نگاه</span></a>" +
+        '<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false">منو</button>' +
+        '<nav class="nav" data-nav>' +
+        '<a href="' +
+        siteHref("/") +
+        '"' +
+        (current === "home" ? ' aria-current="page"' : "") +
+        ">خانه</a>" +
+        '<a href="' +
+        siteHref("#services") +
+        '"' +
+        (current === "services" ? ' aria-current="page"' : "") +
+        ">خدمات</a>" +
+        '<a href="' +
+        siteHref("blog/") +
+        '"' +
+        (current === "blog" ? ' aria-current="page"' : "") +
+        ">مجله زیبایی</a>" +
+        '<a href="' +
+        siteHref("#about") +
+        '"' +
+        (current === "about" ? ' aria-current="page"' : "") +
+        ">درباره مه نگاه</a>" +
+        '<a href="' +
+        siteHref("#tamas") +
+        '">تماس با مه نگاه</a>' +
+        '<button type="button" class="nav-cta" data-open-consult>مشاوره رایگان</button>' +
+        "</nav></div></header>";
+    }
+    if (footerHost) {
+      footerHost.outerHTML =
+        '<footer class="site-footer" id="tamas" data-chrome-ready>' +
+        '<div class="wrap footer-grid">' +
+        "<div><h2>گروه پزشکی مه نگاه</h2>" +
+        "<p>ارائه‌دهنده خدمات پوست و زیبایی در سعادت‌آباد، با پزشکان متخصص و تجهیزات دارای تأییدیه.</p>" +
+        "<p>" +
+        ADDRESS +
+        "</p></div>" +
+        "<div><h2>ارتباط</h2><ul>" +
+        '<li><a href="' +
+        TELEGRAM +
+        '" rel="noopener">تلگرام @mahnegahbot</a></li>' +
+        '<li><a href="' +
+        MAPS +
+        '" rel="noopener">مسیریابی گوگل‌مپ</a></li>' +
+        "</ul></div>" +
+        "<div><h2>صفحات</h2><ul>" +
+        '<li><a href="' +
+        siteHref("blog/") +
+        '">مجله زیبایی</a></li>' +
+        '<li><a href="' +
+        siteHref("facial-full/") +
+        '">فیشیال تخصصی</a></li>' +
+        '<li><a href="' +
+        siteHref("laser-full/") +
+        '">لیزر موهای زائد</a></li>' +
+        '<li><a href="' +
+        siteHref("زاویه-سازی-فک-چگونه-است-قیمت-روش/") +
+        '">زاویه سازی فک</a></li>' +
+        "</ul></div></div></footer>";
+    }
+
+    const modal = document.createElement("div");
+    modal.className = "modal";
+    modal.setAttribute("data-consult-modal", "");
+    modal.hidden = true;
+    modal.innerHTML =
+      '<div class="modal-backdrop" data-close-modal></div>' +
+      '<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="consult-title">' +
+      '<button class="modal-close" type="button" data-close-modal aria-label="بستن">×</button>' +
+      ' <h2 id="consult-title">مشاوره رایگان</h2>' +
+      '<p class="muted">نام، موبایل و خدمت را بفرستید تا مشاور مه نگاه با شما تماس بگیرد.</p>' +
+      formMarkup("") +
+      "</div>";
+    document.body.appendChild(modal);
+
+    const sticky = document.createElement("button");
+    sticky.type = "button";
+    sticky.className = "sticky-consult";
+    sticky.setAttribute("data-open-consult", "");
+    sticky.textContent = "مشاوره رایگان";
+    document.body.appendChild(sticky);
   }
 
   function captureAttribution() {
@@ -86,20 +242,40 @@
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("webhook " + res.status);
-      const base = document.documentElement.getAttribute("data-base") || "";
-      window.location.href = base + "thankyou/";
+      window.location.href = siteHref("thankyou/");
     } catch (err) {
-      setStatus(
-        status,
-        "err",
-        "ارسال فرم ناموفق بود. از واتساپ اقدام کنید یا دوباره تلاش کنید."
-      );
+      setStatus(status, "err", "ارسال فرم ناموفق بود. دوباره تلاش کنید یا در تلگرام به @mahnegahbot پیام بدهید.");
       if (btn) btn.disabled = false;
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    captureAttribution();
+  function modalEl() {
+    return qs("[data-consult-modal]");
+  }
+
+  function openModal(service) {
+    const modal = modalEl();
+    if (!modal) return;
+    const select = qs("select[name=service]", modal);
+    if (select) {
+      const match = SERVICES.indexOf(service) !== -1 ? service : "";
+      select.value = match;
+      if (!match) select.selectedIndex = 0;
+    }
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    const name = qs("input[name=name]", modal);
+    if (name) name.focus();
+  }
+
+  function closeModal() {
+    const modal = modalEl();
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+  }
+
+  function bindChrome() {
     const toggle = qs("[data-menu-toggle]");
     const nav = qs("[data-nav]");
     if (toggle && nav) {
@@ -108,8 +284,51 @@
         toggle.setAttribute("aria-expanded", open ? "true" : "false");
       });
     }
+    document.addEventListener("click", function (ev) {
+      const opener = ev.target.closest("[data-open-consult]");
+      if (opener) {
+        ev.preventDefault();
+        openModal(opener.getAttribute("data-service") || "");
+        return;
+      }
+      if (ev.target.closest("[data-close-modal]")) closeModal();
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape") closeModal();
+    });
     document.querySelectorAll("form[data-lead-form]").forEach(function (form) {
       form.addEventListener("submit", onSubmit);
     });
+  }
+
+  function revealOnScroll() {
+    const nodes = document.querySelectorAll("[data-reveal]");
+    if (!nodes.length || !("IntersectionObserver" in window)) {
+      nodes.forEach(function (n) {
+        n.classList.add("is-in");
+      });
+      return;
+    }
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    nodes.forEach(function (n) {
+      io.observe(n);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    captureAttribution();
+    injectChrome();
+    bindChrome();
+    revealOnScroll();
   });
 })();
