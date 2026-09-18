@@ -41,7 +41,7 @@
         <input name="name" type="text" required autocomplete="name" placeholder="نام و نام خانوادگی">
       </label>
       <label>موبایل
-        <input name="phone" type="tel" required inputmode="numeric" autocomplete="tel" placeholder="0912xxxxxxx">
+        <input name="phone" type="tel" required inputmode="numeric" lang="en" autocomplete="tel" maxlength="11" minlength="11" pattern="09[0-9]{9}" placeholder="0912xxxxxxx" dir="ltr">
       </label>
       <label>خدمت مورد نظر
         <select name="service" required>
@@ -58,6 +58,9 @@
           <option value="سایر خدمات">سایر خدمات</option>
         </select>
       </label>
+      <div class="hp-field" aria-hidden="true">
+        <label>شرکت<input name="company" type="text" tabindex="-1" autocomplete="off"></label>
+      </div>
       <button class="btn btn-primary" type="submit">ارسال درخواست</button>
       <div class="form-status" data-form-status></div>
     </form>

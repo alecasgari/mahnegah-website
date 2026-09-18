@@ -1,6 +1,6 @@
 (function () {
   const WEBHOOK =
-    "https://n8n.alecasgari.com/webhook-test/5f5f6cb1-212c-4d22-a131-139a500b4506";
+    "https://n8n.alecasgari.com/webhook/5f5f6cb1-212c-4d22-a131-139a500b4506";
   const MAPS = "https://goo.gl/maps/LQWLw7nzCf7GFoii6";
   const TELEGRAM = "https://t.me/mahnegahbot";
   const ADDRESS =
@@ -57,7 +57,7 @@
       '<input name="name" type="text" required autocomplete="name" placeholder="نام و نام خانوادگی">' +
       "</label>" +
       "<label>موبایل" +
-      '<input name="phone" type="tel" required inputmode="numeric" autocomplete="tel" placeholder="0912xxxxxxx">' +
+      '<input name="phone" type="tel" required inputmode="numeric" lang="en" autocomplete="tel" maxlength="11" minlength="11" pattern="09[0-9]{9}" placeholder="0912xxxxxxx" dir="ltr">' +
       "</label>" +
       "<label>خدمت مورد نظر" +
       '<select name="service" required>' +
@@ -67,6 +67,9 @@
       serviceOptions(selected) +
       "</select>" +
       "</label>" +
+      '<div class="hp-field" aria-hidden="true">' +
+      '<label>شرکت<input name="company" type="text" tabindex="-1" autocomplete="off"></label>' +
+      "</div>" +
       '<button class="btn btn-primary" type="submit">ارسال درخواست</button>' +
       '<div class="form-status" data-form-status></div>' +
       "</form>"
@@ -190,9 +193,11 @@
 
   function payloadFromForm(form) {
     const attr = captureAttribution();
+    const localPhone = (form.phone.value || "").trim();
+    const e164 = toE164(localPhone);
     return {
       name: (form.name.value || "").trim(),
-      phone: (form.phone.value || "").trim(),
+      phone: e164,
       service: form.service.value || "",
       page: location.href,
       path: location.pathname,
@@ -213,6 +218,52 @@
     };
   }
 
+  const FA_DIGITS = /[\u06F0-\u06F9\u0660-\u0669]/;
+  let lastFaAlert = 0;
+
+  function warnEnglishKeyboard() {
+    const now = Date.now();
+    if (now - lastFaAlert < 1600) return;
+    lastFaAlert = now;
+    alert("کیبورد را انگلیسی کنید. فقط رقم انگلیسی 0 تا 9 قبول است.");
+  }
+
+  function toE164(localPhone) {
+    const digits = String(localPhone || "").replace(/\D/g, "");
+    if (/^09\d{9}$/.test(digits)) return "+98" + digits.slice(1);
+    return "";
+  }
+
+  function hasPersianDigits(value) {
+    return FA_DIGITS.test(value || "");
+  }
+
+  function bindPhoneInput(input) {
+    if (!input || input.getAttribute("data-phone-bound")) return;
+    input.setAttribute("data-phone-bound", "1");
+    input.addEventListener("beforeinput", function (ev) {
+      if (ev.data && FA_DIGITS.test(ev.data)) {
+        ev.preventDefault();
+        warnEnglishKeyboard();
+      }
+    });
+    input.addEventListener("paste", function (ev) {
+      const text = (ev.clipboardData || window.clipboardData).getData("text") || "";
+      if (FA_DIGITS.test(text)) {
+        ev.preventDefault();
+        warnEnglishKeyboard();
+      }
+    });
+    input.addEventListener("input", function () {
+      if (FA_DIGITS.test(input.value)) {
+        warnEnglishKeyboard();
+        input.value = input.value.replace(FA_DIGITS, "").replace(/\D/g, "").slice(0, 11);
+        return;
+      }
+      input.value = input.value.replace(/\D/g, "").slice(0, 11);
+    });
+  }
+
   function setStatus(el, type, text) {
     if (!el) return;
     el.className = "form-status " + type;
@@ -224,15 +275,29 @@
     const form = ev.currentTarget;
     const status = qs("[data-form-status]", form) || qs(".form-status", form.parentElement);
     const btn = qs("button[type=submit]", form);
+    const honey = (form.company && form.company.value) || "";
+    const name = (form.name.value || "").trim();
+    const rawPhone = form.phone.value || "";
+    const service = form.service.value || "";
+    if (honey) {
+      window.location.href = siteHref("thankyou/");
+      return;
+    }
+    if (!name || !rawPhone || !service) {
+      setStatus(status, "err", "نام، موبایل و خدمت هر سه الزامی هستند.");
+      return;
+    }
+    if (hasPersianDigits(rawPhone)) {
+      warnEnglishKeyboard();
+      setStatus(status, "err", "شماره را با کیبورد انگلیسی وارد کنید.");
+      return;
+    }
+    const localPhone = rawPhone.replace(/\D/g, "");
+    if (!/^09\d{9}$/.test(localPhone)) {
+      setStatus(status, "err", "موبایل باید ۱۱ رقم انگلیسی و با ۰۹ شروع شود.");
+      return;
+    }
     const data = payloadFromForm(form);
-    if (!data.name || !data.phone || !data.service) {
-      setStatus(status, "err", "لطفاً نام، موبایل و خدمت را کامل کنید.");
-      return;
-    }
-    if (!/^0?9\d{9}$/.test(data.phone.replace(/\s+/g, ""))) {
-      setStatus(status, "err", "شماره موبایل را به‌صورت ۰۹۱۲xxxxxxx وارد کنید.");
-      return;
-    }
     if (btn) btn.disabled = true;
     setStatus(status, "", "در حال ارسال…");
     try {
@@ -298,6 +363,7 @@
     });
     document.querySelectorAll("form[data-lead-form]").forEach(function (form) {
       form.addEventListener("submit", onSubmit);
+      bindPhoneInput(qs("input[name=phone]", form));
     });
   }
 
