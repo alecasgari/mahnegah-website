@@ -1,0 +1,19 @@
+;; Cloudflare BIND import — mahnegahclinic.ir
+;; SOA و NS نگذار؛ کلودفلر خودش دارد.
+;; بعد از ایمپورت: ریشه و www باید نارنجی (Proxied) باشند.
+;; mail / webmail / cpanel باید خاکستری (DNS only) بمانند.
+
+;; سایت → GitHub Pages
+mahnegahclinic.ir.	1	IN	CNAME	alecasgari.github.io. ; cf_tags=cf-proxied:true
+www.mahnegahclinic.ir.	1	IN	CNAME	alecasgari.github.io. ; cf_tags=cf-proxied:true
+
+;; ایمیل و دسترسی به هاست قدیمی (پروکسی خاموش)
+mail.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+webmail.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+autoconfig.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+autodiscover.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+cpanel.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+whm.mahnegahclinic.ir.	1	IN	A	168.119.213.48 ; cf_tags=cf-proxied:false
+
+;; MX
+mahnegahclinic.ir.	1	IN	MX	0 mail.mahnegahclinic.ir.

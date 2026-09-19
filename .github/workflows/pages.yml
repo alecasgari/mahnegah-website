@@ -35,7 +35,6 @@ jobs:
             --exclude '.git' \
             --exclude '.github' \
             --exclude '_content' \
-            --exclude 'CNAME' \
             --exclude '.gitignore' \
             ./ _site/
           touch _site/.nojekyll
