@@ -74,7 +74,7 @@ ul, ol { padding-right: 1.3em; }
   margin-inline: auto;
   min-height: 60px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
   padding: 6px 8px 6px 10px;
@@ -85,9 +85,6 @@ ul, ol { padding-right: 1.3em; }
   box-shadow: 0 10px 30px rgba(15, 92, 87, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
   backdrop-filter: blur(18px) saturate(1.35);
   -webkit-backdrop-filter: blur(18px) saturate(1.35);
-}
-.site-header.is-scrolled .header-pill {
-  grid-template-columns: auto minmax(0, 1fr) auto;
 }
 .header-inner {
   height: auto;
@@ -107,6 +104,7 @@ ul, ol { padding-right: 1.3em; }
   font-size: 1.22rem;
   font-weight: 800;
   letter-spacing: -0.01em;
+  transition: font-size 0.38s ease, font-weight 0.38s ease;
 }
 .site-header.is-scrolled .brand span {
   font-size: 0.92rem;
@@ -114,16 +112,28 @@ ul, ol { padding-right: 1.3em; }
 }
 .brand:hover { text-decoration: none; color: var(--teal); }
 .header-motto {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   margin: 0;
-  min-width: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  max-width: calc(100% - 200px);
+  transform: translate(-50%, calc(-50% + 8px));
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
   user-select: none;
+  transition: opacity 0.38s ease, transform 0.38s ease, visibility 0.38s ease;
 }
-.site-header.is-scrolled .header-motto { display: flex; }
+.site-header.is-scrolled .header-motto {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%);
+}
 .motto-text {
   font-size: clamp(0.78rem, 1.2vw, 1.02rem);
   font-weight: 700;
@@ -440,21 +450,23 @@ button.share-pill:hover {
   transform: translateX(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: linear-gradient(135deg, #1a8a82 0%, #0f5c57 52%, #0a3f3b 100%);
-  color: #fff;
-  border: 1px solid rgba(240, 217, 160, 0.75);
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #fff5f8 0%, #f7cdd9 55%, #f3bccb 100%);
+  color: #4a2432;
+  border: 1px solid rgba(214, 130, 156, 0.45);
   border-radius: 999px;
-  padding: 10px 18px;
+  padding: 8px 22px;
   font: inherit;
   font-size: 0.88rem;
   font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  box-shadow: 0 0 0 1px rgba(176, 137, 77, 0.28), 0 10px 28px rgba(15, 92, 87, 0.28), 0 0 16px rgba(176, 137, 77, 0.35);
+  box-shadow: 0 8px 22px rgba(180, 80, 110, 0.16);
 }
-.sticky-consult svg { width: 14px; height: 14px; flex: none; display: block; }
 .sticky-consult:hover {
-  background: linear-gradient(135deg, #1f9a91 0%, #147a73 50%, #0f5c57 100%);
+  background: linear-gradient(135deg, #ffeef3 0%, #f4c0cf 55%, #eeadc0 100%);
+  color: #3f1e2b;
 }
 
 body.modal-open { overflow: hidden; }
@@ -567,6 +579,7 @@ body.modal-open { overflow: hidden; }
   .hero-visual img { animation: none; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .nav { transition: none; }
+  .header-motto, .brand span { transition: none; }
 }
 
 .post-list { display: grid; gap: 14px; }
@@ -596,19 +609,16 @@ body.modal-open { overflow: hidden; }
 .chip:hover, .chip.active { background: var(--teal); color: #fff; text-decoration: none; border-color: var(--teal); }
 
 @media (max-width: 1100px) {
-  .site-header.is-scrolled .header-motto { display: none; }
-  .site-header.is-scrolled .header-pill { grid-template-columns: 1fr auto; }
+  .site-header.is-scrolled .header-motto { opacity: 0; visibility: hidden; }
 }
 @media (max-width: 860px) {
   .grid-3, .grid-2, .points, .footer-grid, .post-item,
   .hero-grid, .about-grid { grid-template-columns: 1fr; }
   .menu-toggle { display: inline-flex; }
-  .site-header.is-scrolled .header-motto { display: flex; }
-  .site-header.is-scrolled .header-pill { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .brand span { display: inline; }
-  .brand img { width: 36px; height: 36px; }
-  .brand span { font-size: 1.08rem; }
+  .site-header.is-scrolled .header-motto { opacity: 1; visibility: visible; }
+  .brand span { display: inline; font-size: 1.08rem; }
   .site-header.is-scrolled .brand span { font-size: 0.8rem; }
+  .brand img { width: 36px; height: 36px; }
   .motto-text {
     font-size: 0.78rem;
     letter-spacing: 0;
@@ -617,6 +627,7 @@ body.modal-open { overflow: hidden; }
     line-height: 1.35;
   }
   .motto-rule { display: none; }
+  .header-motto { max-width: calc(100% - 150px); }
   .nav {
     position: absolute;
     top: calc(100% + 8px);
@@ -630,11 +641,11 @@ body.modal-open { overflow: hidden; }
     pointer-events: none;
     padding: 0 12px;
     border-radius: 22px;
-    background: linear-gradient(135deg, rgba(255,253,249,0.94), rgba(215,236,233,0.7));
-    border: 1px solid rgba(255,255,255,0.72);
-    box-shadow: 0 10px 30px rgba(15, 92, 87, 0.1);
-    backdrop-filter: blur(18px) saturate(1.35);
-    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    background: #fffdf9;
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 32px rgba(28, 25, 23, 0.12);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     transform: translateY(-8px);
     transition: max-height 0.18s ease, opacity 0.16s ease, transform 0.16s ease, padding 0.16s ease;
   }
@@ -653,7 +664,8 @@ body.modal-open { overflow: hidden; }
     bottom: 12px;
     transform: none;
     width: auto;
+    justify-content: center;
     border-radius: 999px;
-    padding: 14px 18px;
+    padding: 8px 16px;
   }
 }

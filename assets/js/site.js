@@ -174,8 +174,7 @@
     sticky.type = "button";
     sticky.className = "sticky-consult";
     sticky.setAttribute("data-open-consult", "");
-    sticky.innerHTML =
-      '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l1.4 4.2L18 8.6l-3.6 3.1L15.5 16 12 13.8 8.5 16l1.1-4.3L6 8.6l4.6-1.4z"/></svg>مشاوره';
+    sticky.textContent = "مشاوره رایگان";
     document.body.appendChild(sticky);
   }
 
