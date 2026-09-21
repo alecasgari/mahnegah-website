@@ -94,7 +94,7 @@
         "<span>مه نگاه</span></a>" +
         '<p class="header-motto"><span class="motto-rule"></span><span class="motto-text">زیباتر بودن، حق شماست!</span><span class="motto-rule"></span></p>' +
         '<div class="header-end">' +
-        '<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false">منو</button>' +
+        '<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="منو"><span class="menu-bars" aria-hidden="true"><span></span><span></span><span></span></span></button>' +
         '<nav class="nav" data-nav>' +
         '<a href="' +
         siteHref("/") +
@@ -119,7 +119,7 @@
         '<a href="' +
         siteHref("#tamas") +
         '">تماس با مه نگاه</a>' +
-        '<button type="button" class="nav-cta" data-open-consult>مشاوره رایگان</button>' +
+        '<button type="button" class="nav-cta" data-open-consult><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l1.4 4.2L18 8.6l-3.6 3.1L15.5 16 12 13.8 8.5 16l1.1-4.3L6 8.6l4.6-1.4z"/></svg>مشاوره</button>' +
         "</nav></div></div></header>";
     }
     if (footerHost) {
@@ -174,7 +174,8 @@
     sticky.type = "button";
     sticky.className = "sticky-consult";
     sticky.setAttribute("data-open-consult", "");
-    sticky.textContent = "مشاوره رایگان";
+    sticky.innerHTML =
+      '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3l1.4 4.2L18 8.6l-3.6 3.1L15.5 16 12 13.8 8.5 16l1.1-4.3L6 8.6l4.6-1.4z"/></svg>مشاوره';
     document.body.appendChild(sticky);
   }
 
@@ -383,6 +384,14 @@
         navigator.clipboard.writeText(url).then(done).catch(function () {});
       }
     });
+    const header = qs(".site-header");
+    if (header) {
+      const onScroll = function () {
+        header.classList.toggle("is-scrolled", window.scrollY > 50);
+      };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
   }
 
   function revealOnScroll() {
