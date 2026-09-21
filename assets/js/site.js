@@ -84,7 +84,7 @@
     if (headerHost) {
       headerHost.outerHTML =
         '<header class="site-header" data-chrome-ready>' +
-        '<div class="wrap header-inner">' +
+        '<div class="header-pill">' +
         '<a class="brand" href="' +
         siteHref("/") +
         '">' +
@@ -92,6 +92,8 @@
         siteHref("assets/img/logo.png") +
         '" alt="لوگوی مه نگاه" width="42" height="42">' +
         "<span>مه نگاه</span></a>" +
+        '<p class="header-motto"><span class="motto-rule"></span><span class="motto-text">زیباتر بودن، حق شماست!</span><span class="motto-rule"></span></p>' +
+        '<div class="header-end">' +
         '<button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false">منو</button>' +
         '<nav class="nav" data-nav>' +
         '<a href="' +
@@ -118,12 +120,13 @@
         siteHref("#tamas") +
         '">تماس با مه نگاه</a>' +
         '<button type="button" class="nav-cta" data-open-consult>مشاوره رایگان</button>' +
-        "</nav></div></header>";
+        "</nav></div></div></header>";
     }
     if (footerHost) {
       footerHost.outerHTML =
         '<footer class="site-footer" id="tamas" data-chrome-ready>' +
-        '<div class="wrap footer-grid">' +
+        '<div class="footer-pill">' +
+        '<div class="footer-grid">' +
         "<div><h2>گروه پزشکی مه نگاه</h2>" +
         "<p>ارائه‌دهنده خدمات پوست و زیبایی در سعادت‌آباد، با پزشکان متخصص و تجهیزات دارای تأییدیه.</p>" +
         "<p>" +
@@ -150,7 +153,7 @@
         '<li><a href="' +
         siteHref("زاویه-سازی-فک-چگونه-است-قیمت-روش/") +
         '">زاویه سازی فک</a></li>' +
-        "</ul></div></div></footer>";
+        "</ul></div></div></div></footer>";
     }
 
     const modal = document.createElement("div");
