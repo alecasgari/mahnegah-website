@@ -73,10 +73,10 @@ ul, ol { padding-right: 1.3em; }
   width: min(var(--max), 100%);
   margin-inline: auto;
   min-height: 60px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   padding: 6px 10px;
   border-radius: 999px;
   position: relative;
@@ -120,12 +120,11 @@ ul, ol { padding-right: 1.3em; }
   justify-content: center;
   gap: 10px;
   margin: 0;
-  position: absolute;
-  left: 50%;
-  top: 50%;
+  justify-self: center;
   width: max-content;
-  max-width: calc(100% - 168px);
-  transform: translate(-50%, calc(-50% + 8px));
+  max-width: 100%;
+  overflow: hidden;
+  transform: translateY(8px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -136,7 +135,7 @@ ul, ol { padding-right: 1.3em; }
 .site-header.is-scrolled .header-motto {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, -50%);
+  transform: translateY(0);
 }
 .motto-text {
   font-size: clamp(0.78rem, 1.2vw, 1.02rem);
@@ -162,7 +161,7 @@ ul, ol { padding-right: 1.3em; }
   gap: 8px;
   z-index: 2;
   flex: none;
-  margin-inline-start: auto;
+  justify-self: end;
 }
 .nav {
   display: flex;
@@ -634,7 +633,7 @@ body.modal-open { overflow: hidden; }
     line-height: 1.2;
   }
   .motto-rule { display: none; }
-  .header-motto { max-width: min(70%, calc(100% - 148px)); }
+  .header-motto { max-width: 100%; }
   .nav {
     position: absolute;
     top: calc(100% + 8px);
