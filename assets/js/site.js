@@ -332,8 +332,6 @@
     }
     modal.hidden = false;
     document.body.classList.add("modal-open");
-    const name = qs("input[name=name]", modal);
-    if (name) name.focus();
   }
 
   function closeModal() {
