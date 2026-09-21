@@ -73,11 +73,11 @@ ul, ol { padding-right: 1.3em; }
   width: min(var(--max), 100%);
   margin-inline: auto;
   min-height: 60px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 6px 8px 6px 10px;
+  padding: 6px 10px;
   border-radius: 999px;
   position: relative;
   background: linear-gradient(135deg, rgba(255,253,249,0.84), rgba(215,236,233,0.5));
@@ -98,6 +98,9 @@ ul, ol { padding-right: 1.3em; }
   text-decoration: none;
   padding: 4px 8px 4px 4px;
   border-radius: 999px;
+  position: relative;
+  z-index: 2;
+  flex: none;
 }
 .brand img { width: 42px; height: 42px; border-radius: 50%; background: #0b0b0b; }
 .brand span {
@@ -121,12 +124,13 @@ ul, ol { padding-right: 1.3em; }
   left: 50%;
   top: 50%;
   width: max-content;
-  max-width: calc(100% - 200px);
+  max-width: calc(100% - 168px);
   transform: translate(-50%, calc(-50% + 8px));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   user-select: none;
+  z-index: 1;
   transition: opacity 0.38s ease, transform 0.38s ease, visibility 0.38s ease;
 }
 .site-header.is-scrolled .header-motto {
@@ -156,6 +160,9 @@ ul, ol { padding-right: 1.3em; }
   display: flex;
   align-items: center;
   gap: 8px;
+  z-index: 2;
+  flex: none;
+  margin-inline-start: auto;
 }
 .nav {
   display: flex;
@@ -620,14 +627,14 @@ body.modal-open { overflow: hidden; }
   .site-header.is-scrolled .brand span { font-size: 0.8rem; }
   .brand img { width: 36px; height: 36px; }
   .motto-text {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     letter-spacing: 0;
-    white-space: normal;
+    white-space: nowrap;
     text-align: center;
-    line-height: 1.35;
+    line-height: 1.2;
   }
   .motto-rule { display: none; }
-  .header-motto { max-width: calc(100% - 150px); }
+  .header-motto { max-width: min(70%, calc(100% - 148px)); }
   .nav {
     position: absolute;
     top: calc(100% + 8px);
