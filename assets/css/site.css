@@ -559,8 +559,16 @@ body.modal-open { overflow: hidden; }
   .menu-toggle { display: inline-flex; }
   .header-motto { display: flex; }
   .header-pill { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .motto-text { font-size: 0.78rem; letter-spacing: 0; }
-  .motto-rule { width: 12px; }
+  .brand span { display: none; }
+  .brand img { width: 36px; height: 36px; }
+  .motto-text {
+    font-size: 0.78rem;
+    letter-spacing: 0;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+  }
+  .motto-rule { display: none; }
   .nav {
     position: absolute;
     top: calc(100% + 8px);
@@ -600,8 +608,4 @@ body.modal-open { overflow: hidden; }
     border-radius: 999px;
     padding: 14px 18px;
   }
-}
-@media (max-width: 520px) {
-  .header-motto { display: none; }
-  .header-pill { grid-template-columns: auto auto; }
 }
