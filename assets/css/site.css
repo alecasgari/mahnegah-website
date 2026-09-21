@@ -190,13 +190,23 @@ ul, ol { padding-right: 1.3em; }
   justify-content: space-between;
   gap: 12px 16px;
   margin: 8px 0 28px;
-  padding: 10px 12px 10px 14px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255,253,249,0.72), rgba(215,236,233,0.38));
+  padding: 10px 12px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255,253,249,0.84), rgba(215,236,233,0.5));
   border: 1px solid rgba(255,255,255,0.72);
   box-shadow: 0 10px 30px rgba(15, 92, 87, 0.08), inset 0 1px 0 rgba(255,255,255,0.8);
   backdrop-filter: blur(18px) saturate(1.35);
   -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+.share-card svg {
+  width: 16px !important;
+  height: 16px !important;
+  max-width: 16px;
+  max-height: 16px;
+  display: block;
+  flex: none;
+  overflow: hidden;
 }
 .share-brand {
   display: flex;
@@ -229,39 +239,39 @@ ul, ol { padding-right: 1.3em; }
   flex-wrap: wrap;
   gap: 6px;
 }
-.share-pill {
+a.share-pill,
+button.share-pill {
   appearance: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   margin: 0;
   border: 1px solid rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.42);
+  background: rgba(255,255,255,0.55);
   color: var(--ink);
   font: inherit;
   font-size: 0.82rem;
   font-weight: 600;
+  line-height: 1;
   padding: 8px 12px;
   border-radius: 999px;
   text-decoration: none;
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  overflow: hidden;
+  flex: none;
 }
-.share-pill svg { width: 14px; height: 14px; flex: none; }
-.share-pill:hover {
+a.share-pill:hover,
+button.share-pill:hover {
   color: var(--teal-dark);
   text-decoration: none;
-  background: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.9);
   border-color: rgba(176, 137, 77, 0.45);
 }
 @media (max-width: 640px) {
-  .share-card {
-    border-radius: 22px;
-    padding: 12px;
-  }
+  .share-card { border-radius: 22px; }
   .share-pills { width: 100%; }
-  .share-pill { flex: 1; justify-content: center; }
+  a.share-pill, button.share-pill { flex: 1 1 auto; }
 }
 .featured {
   border-radius: 18px;
