@@ -365,6 +365,21 @@
       form.addEventListener("submit", onSubmit);
       bindPhoneInput(qs("input[name=phone]", form));
     });
+    document.addEventListener("click", function (ev) {
+      const btn = ev.target.closest("[data-copy-link]");
+      if (!btn) return;
+      const url = btn.getAttribute("data-url") || location.href;
+      const done = function () {
+        const prev = btn.textContent;
+        btn.textContent = "کپی شد";
+        setTimeout(function () {
+          btn.textContent = prev;
+        }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(done).catch(function () {});
+      }
+    });
   }
 
   function revealOnScroll() {

@@ -183,6 +183,35 @@ ul, ol { padding-right: 1.3em; }
 .crumbs { font-size: 0.88rem; color: var(--muted); margin-bottom: 12px; }
 .crumbs a { color: var(--muted); }
 .meta-row { color: var(--muted); font-size: 0.92rem; margin-bottom: 18px; }
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.share-bar span {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-left: 4px;
+}
+.share-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.share-btn:hover { border-color: var(--gold, #c4a574); }
 .featured {
   border-radius: 18px;
   overflow: hidden;
