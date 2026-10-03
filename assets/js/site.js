@@ -153,7 +153,9 @@
         '<li><a href="' +
         siteHref("زاویه-سازی-فک-چگونه-است-قیمت-روش/") +
         '">زاویه سازی فک</a></li>' +
-        "</ul></div></div></div></footer>";
+        "</ul></div></div>" +
+        '<p class="footer-credit">ساخته شده با احترام، توسط <a href="https://alecasgari.com" rel="noopener noreferrer" target="_blank">الک عسگری</a></p>' +
+        "</div></footer>";
     }
 
     const modal = document.createElement("div");
